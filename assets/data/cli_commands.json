@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "vendor": "Cisco",
+    "category": "Interface",
+    "title": "인터페이스 상태 확인",
+    "command": "show interfaces status",
+    "description": "모든 인터페이스의 연결 상태, 속도, 듀플렉스를 확인한다."
+  },
+  {
+    "id": 2,
+    "vendor": "Cisco",
+    "category": "Interface",
+    "title": "특정 인터페이스 상세 확인",
+    "command": "show interfaces GigabitEthernet0/0",
+    "description": "특정 인터페이스의 트래픽, 에러, MAC 주소 등 상세 정보를 확인한다."
+  },
+  {
+    "id": 3,
+    "vendor": "Cisco",
+    "category": "Interface",
+    "title": "인터페이스 활성화",
+    "command": "no shutdown",
+    "description": "shutdown 상태의 인터페이스를 활성화한다."
+  },
+  {
+    "id": 4,
+    "vendor": "Cisco",
+    "category": "VLAN",
+    "title": "VLAN 목록 확인",
+    "command": "show vlan brief",
+    "description": "현재 설정된 VLAN 목록과 각 VLAN에 속한 포트를 확인한다."
+  },
+  {
+    "id": 5,
+    "vendor": "Cisco",
+    "category": "VLAN",
+    "title": "VLAN 생성",
+    "command": "vlan 10",
+    "description": "VLAN 10을 생성한다. VLAN 설정 모드로 진입 후 name 명령어로 이름 지정 가능."
+  },
+  {
+    "id": 6,
+    "vendor": "Cisco",
+    "category": "VLAN",
+    "title": "Access 포트 설정",
+    "command": "switchport mode access\nswitchport access vlan 10",
+    "description": "포트를 Access 모드로 설정하고 VLAN 10에 할당한다."
+  },
+  {
+    "id": 7,
+    "vendor": "Cisco",
+    "category": "VLAN",
+    "title": "Trunk 포트 설정",
+    "command": "switchport mode trunk\nswitchport trunk allowed vlan 10,20,30",
+    "description": "포트를 Trunk 모드로 설정하고 허용할 VLAN을 지정한다."
+  },
+  {
+    "id": 8,
+    "vendor": "Cisco",
+    "category": "Routing",
+    "title": "라우팅 테이블 확인",
+    "command": "show ip route",
+    "description": "현재 라우팅 테이블을 확인한다. C=Connected, S=Static, O=OSPF 등."
+  },
+  {
+    "id": 9,
+    "vendor": "Cisco",
+    "category": "Routing",
+    "title": "정적 라우트 설정",
+    "command": "ip route 192.168.2.0 255.255.255.0 192.168.1.1",
+    "description": "목적지 네트워크로 가는 정적 라우트를 설정한다."
+  },
+  {
+    "id": 10,
+    "vendor": "Cisco",
+    "category": "Routing",
+    "title": "OSPF 상태 확인",
+    "command": "show ip ospf neighbor",
+    "description": "OSPF 네이버 관계와 상태를 확인한다."
+  },
+  {
+    "id": 11,
+    "vendor": "Juniper",
+    "category": "Interface",
+    "title": "인터페이스 상태 확인",
+    "command": "show interfaces terse",
+    "description": "모든 인터페이스의 상태를 간략하게 확인한다."
+  },
+  {
+    "id": 12,
+    "vendor": "Juniper",
+    "category": "Interface",
+    "title": "특정 인터페이스 상세 확인",
+    "command": "show interfaces ge-0/0/0 detail",
+    "description": "특정 인터페이스의 상세 정보를 확인한다."
+  },
+  {
+    "id": 13,
+    "vendor": "Juniper",
+    "category": "VLAN",
+    "title": "VLAN 목록 확인",
+    "command": "show vlans",
+    "description": "현재 설정된 VLAN 목록을 확인한다."
+  },
+  {
+    "id": 14,
+    "vendor": "Juniper",
+    "category": "VLAN",
+    "title": "VLAN 생성",
+    "command": "set vlans VLAN10 vlan-id 10",
+    "description": "VLAN 10을 생성하고 이름을 VLAN10으로 지정한다."
+  },
+  {
+    "id": 15,
+    "vendor": "Juniper",
+    "category": "Routing",
+    "title": "라우팅 테이블 확인",
+    "command": "show route",
+    "description": "현재 라우팅 테이블 전체를 확인한다."
+  },
+  {
+    "id": 16,
+    "vendor": "Aruba",
+    "category": "Interface",
+    "title": "인터페이스 상태 확인",
+    "command": "show interfaces status",
+    "description": "모든 인터페이스의 연결 상태를 확인한다."
+  },
+  {
+    "id": 17,
+    "vendor": "Aruba",
+    "category": "VLAN",
+    "title": "VLAN 목록 확인",
+    "command": "show vlans",
+    "description": "현재 설정된 VLAN 목록을 확인한다."
+  },
+  {
+    "id": 18,
+    "vendor": "Piolink",
+    "category": "Interface",
+    "title": "인터페이스 상태 확인",
+    "command": "show interface",
+    "description": "모든 인터페이스의 상태를 확인한다."
+  },
+  {
+    "id": 19,
+    "vendor": "Piolink",
+    "category": "VLAN",
+    "title": "VLAN 목록 확인",
+    "command": "show vlan",
+    "description": "현재 설정된 VLAN 목록을 확인한다."
+  },
+  {
+    "id": 20,
+    "vendor": "Piolink",
+    "category": "Routing",
+    "title": "라우팅 테이블 확인",
+    "command": "show ip route",
+    "description": "현재 라우팅 테이블을 확인한다."
+  }
+]
