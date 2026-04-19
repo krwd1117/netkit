@@ -40,11 +40,21 @@ class _SubnetScreenState extends ConsumerState<SubnetScreen> {
             PrefixSlider(prefix: prefix),
             const SizedBox(height: 24),
             if (result != null) ResultCard(result: result),
-            if (result == null)
+            // IP가 비어있을 때만 안내 메시지 표시
+            if (result == null && ref.watch(ipInputProvider).isEmpty)
               const Center(
                 child: Text(
                   'IP 주소를 입력하세요',
                   style: TextStyle(color: Colors.grey),
+                ),
+              ),
+
+            // IP는 입력했지만 계산 실패 (잘못된 입력)일 때
+            if (result == null && ref.watch(ipInputProvider).isNotEmpty)
+              const Center(
+                child: Text(
+                  '올바른 IP 주소를 입력하세요',
+                  style: TextStyle(color: Colors.red),
                 ),
               ),
           ],
