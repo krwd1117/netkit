@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/organisms/dns_lookup_panel.dart';
+import 'widgets/organisms/ping_panel.dart';
 
-// 네트워크 진단 메인 화면
 class DiagnosticsScreen extends StatefulWidget {
   const DiagnosticsScreen({super.key});
 
@@ -16,7 +16,6 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen>
   @override
   void initState() {
     super.initState();
-    // 탭 3개 초기화
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -44,7 +43,7 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen>
         controller: _tabController,
         children: const [
           DnsLookupPanel(),
-          Center(child: Text('Ping — 준비 중')),
+          PingPanel(),
           Center(child: Text('Port Scanner — 준비 중')),
         ],
       ),
