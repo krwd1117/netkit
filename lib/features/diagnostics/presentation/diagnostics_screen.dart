@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/organisms/dns_lookup_panel.dart';
 import 'widgets/organisms/ping_panel.dart';
+import 'widgets/organisms/port_scanner_panel.dart'; // 추가
 
 class DiagnosticsScreen extends StatefulWidget {
   const DiagnosticsScreen({super.key});
@@ -44,7 +45,7 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen>
         children: const [
           DnsLookupPanel(),
           PingPanel(),
-          Center(child: Text('Port Scanner — 준비 중')),
+          PortScannerPanel(), // 수정
         ],
       ),
     );
