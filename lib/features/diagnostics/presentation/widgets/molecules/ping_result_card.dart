@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../../domain/ping_result.dart';
 import '../atoms/result_item.dart';
 
-// Ping 결과 카드
 class PingResultCard extends StatelessWidget {
   final PingResult result;
 
@@ -10,29 +10,48 @@ class PingResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final statusColor = result.isReachable ? AppColors.success : AppColors.error;
+    final statusBg = result.isReachable
+        ? (isDark ? AppColors.successBgDark : AppColors.successBg)
+        : (isDark ? AppColors.errorBgDark : AppColors.errorBg);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                // 응답 여부 아이콘
-                Icon(
-                  result.isReachable ? Icons.check_circle : Icons.cancel,
-                  color: result.isReachable ? Colors.green : Colors.red,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  result.isReachable ? '응답 있음' : '응답 없음',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: result.isReachable ? Colors.green : Colors.red,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                color: statusBg,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    result.isReachable
+                        ? Icons.check_circle_rounded
+                        : Icons.cancel_rounded,
+                    color: statusColor,
+                    size: 20,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Text(
+                    result.isReachable ? '응답 있음' : '응답 없음',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: statusColor,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const Divider(),
+            const SizedBox(height: 16),
             ResultItem(label: 'Host', value: result.host),
             ResultItem(label: 'IP', value: result.ip),
             ResultItem(

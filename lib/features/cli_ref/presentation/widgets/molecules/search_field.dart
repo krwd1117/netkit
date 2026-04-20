@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// 검색 입력 필드
 class SearchField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
@@ -14,14 +13,12 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
       child: TextField(
         controller: controller,
         decoration: const InputDecoration(
-          labelText: '명령어 검색',
-          hintText: 'show, vlan, route...',
-          border: OutlineInputBorder(),
-          prefixIcon: Icon(Icons.search),
+          hintText: '명령어 검색',
+          prefixIcon: Icon(Icons.search_rounded),
         ),
         onChanged: onChanged,
       ),

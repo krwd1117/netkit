@@ -5,7 +5,6 @@ import 'widgets/molecules/category_chip_list.dart';
 import 'widgets/molecules/search_field.dart';
 import 'widgets/organisms/command_list.dart';
 
-// CLI 레퍼런스 메인 화면
 class CliRefScreen extends ConsumerStatefulWidget {
   const CliRefScreen({super.key});
 
@@ -31,13 +30,11 @@ class _CliRefScreenState extends ConsumerState<CliRefScreen> {
       appBar: AppBar(title: const Text('CLI Reference')),
       body: Column(
         children: [
-          // 검색 필드
           SearchField(
             controller: _searchController,
             onChanged: (value) => setState(() => _query = value),
           ),
-
-          // 벤더 선택
+          const SizedBox(height: 4),
           VendorChipList(
             selectedVendor: _selectedVendor,
             onSelected: (vendor) => setState(() {
@@ -45,10 +42,8 @@ class _CliRefScreenState extends ConsumerState<CliRefScreen> {
               _selectedCategory = null;
             }),
           ),
-          const SizedBox(height: 8),
-
-          // 카테고리 선택
-          if (_selectedVendor != null)
+          if (_selectedVendor != null) ...[
+            const SizedBox(height: 8),
             CategoryChipList(
               vendor: _selectedVendor!,
               selectedCategory: _selectedCategory,
@@ -56,15 +51,29 @@ class _CliRefScreenState extends ConsumerState<CliRefScreen> {
                 _selectedCategory = category;
               }),
             ),
+          ],
           const SizedBox(height: 8),
-
-          // 명령어 목록
           Expanded(
             child: _selectedVendor == null || _selectedCategory == null
-                ? const Center(
-                    child: Text(
-                      '벤더와 카테고리를 선택하세요',
-                      style: TextStyle(color: Colors.grey),
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.terminal_outlined,
+                          size: 44,
+                          color: Theme.of(context).colorScheme.outlineVariant,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          _selectedVendor == null
+                              ? '벤더를 선택하세요'
+                              : '카테고리를 선택하세요',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : CommandList(

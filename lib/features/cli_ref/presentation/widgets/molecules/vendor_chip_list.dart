@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../application/cli_repository.dart';
 import '../atoms/command_chip.dart';
 
-// 벤더 칩 목록
 class VendorChipList extends ConsumerWidget {
   final String? selectedVendor;
   final ValueChanged<String?> onSelected;
@@ -21,7 +20,7 @@ class VendorChipList extends ConsumerWidget {
     return vendorsAsync.when(
       data: (vendors) => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           children: vendors.map((vendor) {
             final isSelected = selectedVendor == vendor;

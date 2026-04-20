@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../../application/cli_repository.dart';
 import '../../../domain/cli_command.dart';
 
-// 명령어 하나를 카드 형태로 표시
 class CommandCard extends ConsumerWidget {
   final CliCommand command;
 
@@ -14,39 +14,46 @@ class CommandCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final favoriteIds = ref.watch(favoriteIdsProvider);
     final isFavorite = favoriteIds.contains(command.id);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final codeBg = isDark ? AppColors.codeBgDark : AppColors.codeBgLight;
+    final secondaryColor = isDark
+        ? AppColors.textSecondaryDark
+        : AppColors.textSecondaryLight;
 
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 6),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // 명령어 제목
                 Expanded(
                   child: Text(
                     command.title,
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ),
-                // 즐겨찾기 버튼
-                IconButton(
-                  icon: Icon(
-                    isFavorite ? Icons.star : Icons.star_border,
-                    color: isFavorite ? Colors.amber : Colors.grey,
-                  ),
-                  onPressed: () {
+                GestureDetector(
+                  onTap: () {
                     ref.read(favoriteIdsProvider.notifier).toggle(command.id);
                   },
+                  child: Icon(
+                    isFavorite ? Icons.star_rounded : Icons.star_outline_rounded,
+                    color: isFavorite ? AppColors.warning : secondaryColor,
+                    size: 22,
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
 
-            // 명령어 — 탭하면 클립보드 복사
+            // 명령어 코드 블록 — 탭하면 클립보드 복사
             GestureDetector(
               onTap: () {
                 Clipboard.setData(ClipboardData(text: command.command));
@@ -59,25 +66,38 @@ class CommandCard extends ConsumerWidget {
               },
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
+                  color: codeBg,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
-                  command.command,
-                  style: Theme.of(context).textTheme.labelLarge,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        command.command,
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(
+                      Icons.copy_rounded,
+                      size: 14,
+                      color: secondaryColor,
+                    ),
+                  ],
                 ),
               ),
             ),
             const SizedBox(height: 8),
 
-            // 명령어 설명
             Text(
               command.description,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: secondaryColor,
+              ),
             ),
           ],
         ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../../application/port_scanner_service.dart';
 import '../molecules/port_result_card.dart';
 
-// Port Scanner 전체 패널
 class PortScannerPanel extends ConsumerStatefulWidget {
   const PortScannerPanel({super.key});
 
@@ -25,63 +25,90 @@ class _PortScannerPanelState extends ConsumerState<PortScannerPanel> {
     final scanState = ref.watch(portScanProvider);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 입력 필드 + 스캔 버튼
+          const SizedBox(height: 20),
           Row(
             children: [
               Expanded(
                 child: TextField(
                   controller: _controller,
                   decoration: const InputDecoration(
-                    labelText: 'Host / IP',
-                    hintText: '192.168.1.1 또는 google.com',
-                    border: OutlineInputBorder(),
+                    hintText: '192.168.1.1 or google.com',
                     prefixIcon: Icon(Icons.radar_outlined),
                   ),
                   onSubmitted: (value) => _scan(value),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               ElevatedButton(
                 onPressed: () => _scan(_controller.text),
-                child: const Text('스캔'),
+                child: const Text('Scan'),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
 
-          // 결과 표시
           Expanded(
             child: scanState.when(
               data: (result) => result == null
-                  ? const Center(
-                      child: Text(
-                        'Host 또는 IP를 입력하세요',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    )
+                  ? _emptyState(context)
                   : SingleChildScrollView(
                       child: PortResultCard(result: result),
                     ),
-              loading: () => const Center(
+              loading: () => Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('포트 스캔 중...', style: TextStyle(color: Colors.grey)),
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 16),
+                    Text(
+                      '포트 스캔 중...',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                    ),
                   ],
                 ),
               ),
               error: (e, _) => Center(
-                child: Text(
-                  '오류: $e',
-                  style: const TextStyle(color: Colors.red),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.error_outline_rounded, size: 40, color: AppColors.error),
+                    const SizedBox(height: 12),
+                    Text(
+                      '오류: $e',
+                      style: const TextStyle(color: AppColors.error),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _emptyState(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.radar_outlined,
+            size: 44,
+            color: Theme.of(context).colorScheme.outlineVariant,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Host 또는 IP를 입력하세요',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.outline,
             ),
           ),
         ],

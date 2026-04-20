@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../application/subnet_provider.dart';
 import 'widgets/ip_text_field.dart';
 import 'widgets/prefix_slider.dart';
 import 'widgets/result_card.dart';
 
-// 서브넷 계산기 메인 화면
-// 각 위젯을 조합만 하는 역할 — 로직 없음
 class SubnetScreen extends ConsumerStatefulWidget {
   const SubnetScreen({super.key});
 
@@ -27,36 +26,71 @@ class _SubnetScreenState extends ConsumerState<SubnetScreen> {
   Widget build(BuildContext context) {
     final prefix = ref.watch(prefixInputProvider);
     final result = ref.watch(subnetResultProvider);
+    final ipInput = ref.watch(ipInputProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Subnet Calculator')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 8),
             IpTextField(controller: _ipController),
             const SizedBox(height: 16),
             PrefixSlider(prefix: prefix),
             const SizedBox(height: 24),
+
             if (result != null) ResultCard(result: result),
-            // IP가 비어있을 때만 안내 메시지 표시
-            if (result == null && ref.watch(ipInputProvider).isEmpty)
-              const Center(
-                child: Text(
-                  'IP 주소를 입력하세요',
-                  style: TextStyle(color: Colors.grey),
-                ),
+
+            if (result == null && ipInput.isEmpty)
+              _EmptyState(
+                icon: Icons.lan_outlined,
+                message: 'IP 주소를 입력하세요',
               ),
 
-            // IP는 입력했지만 계산 실패 (잘못된 입력)일 때
-            if (result == null && ref.watch(ipInputProvider).isNotEmpty)
-              const Center(
-                child: Text(
-                  '올바른 IP 주소를 입력하세요',
-                  style: TextStyle(color: Colors.red),
-                ),
+            if (result == null && ipInput.isNotEmpty)
+              _EmptyState(
+                icon: Icons.error_outline_rounded,
+                message: '올바른 IP 주소를 입력하세요',
+                isError: true,
               ),
+
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  final IconData icon;
+  final String message;
+  final bool isError;
+
+  const _EmptyState({
+    required this.icon,
+    required this.message,
+    this.isError = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isError ? AppColors.error : AppColors.textSecondaryLight;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(icon, size: 44, color: color.withValues(alpha: 0.4)),
+            const SizedBox(height: 12),
+            Text(
+              message,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: color,
+              ),
+            ),
           ],
         ),
       ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../domain/subnet_result.dart';
 import 'result_row.dart';
 
-// 서브넷 계산 결과 전체를 카드 형태로 표시하는 위젯
 class ResultCard extends StatelessWidget {
   final SubnetResult result;
 
@@ -10,14 +9,18 @@ class ResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('계산 결과', style: Theme.of(context).textTheme.titleMedium),
-            const Divider(),
+            Text('계산 결과', style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 16),
             ResultRow(label: 'Network', value: result.networkAddress),
             ResultRow(label: 'Broadcast', value: result.broadcastAddress),
             ResultRow(label: 'Subnet Mask', value: result.subnetMask),
