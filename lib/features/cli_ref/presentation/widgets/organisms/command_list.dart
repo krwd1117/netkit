@@ -30,7 +30,7 @@ class CommandList extends ConsumerWidget {
       data: (commands) => commands.isEmpty
           ? const Center(child: Text('명령어가 없어요'))
           : ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
               itemCount: commands.length,
               itemBuilder: (_, i) => CommandCard(command: commands[i]),
             ),

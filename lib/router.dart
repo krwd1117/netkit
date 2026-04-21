@@ -34,7 +34,7 @@ class _MainShellState extends State<MainShell> {
         selectedIndex: _currentIndex,
         onDestinationSelected: (idx) {
           setState(() {
-            _currentIndex = idx; // 탭 선택 시 인덱스 업데이트
+            _currentIndex = idx;
           });
         },
         destinations: const [

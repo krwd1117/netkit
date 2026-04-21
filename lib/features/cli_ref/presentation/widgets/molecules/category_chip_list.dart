@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../application/cli_repository.dart';
 import '../atoms/command_chip.dart';
 
-// 카테고리 칩 목록
 class CategoryChipList extends ConsumerWidget {
   final String vendor;
   final String? selectedCategory;
@@ -23,7 +22,7 @@ class CategoryChipList extends ConsumerWidget {
     return categoriesAsync.when(
       data: (categories) => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           children: categories.map((category) {
             final isSelected = selectedCategory == category;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../../domain/port_result.dart';
 
-// 포트 스캔 결과 카드
 class PortResultCard extends StatelessWidget {
   final PortScanResult result;
 
@@ -9,56 +9,89 @@ class PortResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final secondaryColor = isDark
+        ? AppColors.textSecondaryDark
+        : AppColors.textSecondaryLight;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 호스트 정보
-            Text('스캔 결과', style: Theme.of(context).textTheme.titleMedium),
-            const Divider(),
-            Text(
-              'Host: ${result.host}',
-              style: Theme.of(context).textTheme.bodyMedium,
+            Text('스캔 결과', style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 16),
+            _InfoRow(label: 'Host', value: result.host, secondary: secondaryColor),
+            const SizedBox(height: 4),
+            _InfoRow(label: 'IP', value: result.ip, secondary: secondaryColor),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Text(
+                  '열린 포트',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: secondaryColor,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.infoBg,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    '${result.openPorts.length}',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Text(
-              'IP: ${result.ip}',
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '열린 포트 ${result.openPorts.length}개',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
-            ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
 
-            // 포트 목록 — 열린 포트만 표시
             if (result.openPorts.isEmpty)
-              const Text('열린 포트가 없어요', style: TextStyle(color: Colors.grey))
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  '열린 포트가 없어요',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: secondaryColor,
+                  ),
+                ),
+              )
             else
               ...result.openPorts.map(
                 (port) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: Row(
                     children: [
-                      // 열린 포트 아이콘
-                      const Icon(Icons.circle, size: 8, color: Colors.green),
-                      const SizedBox(width: 8),
-                      // 포트 번호
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: AppColors.success,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
                       Text(
                         '${port.port}',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
-                      const SizedBox(width: 8),
-                      // 서비스 이름
+                      const SizedBox(width: 10),
                       Text(
                         port.service,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: secondaryColor,
+                        ),
                       ),
                     ],
                   ),
@@ -67,6 +100,34 @@ class PortResultCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color secondary;
+
+  const _InfoRow({
+    required this.label,
+    required this.value,
+    required this.secondary,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: secondary,
+          ),
+        ),
+        Text(value, style: Theme.of(context).textTheme.labelLarge),
+      ],
     );
   }
 }
